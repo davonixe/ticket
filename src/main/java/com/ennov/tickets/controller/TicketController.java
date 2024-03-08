@@ -30,10 +30,9 @@ public class TicketController {
     @Autowired
     TicketService service;
 
-    @SuppressWarnings("unchecked")
     @GetMapping("/tickets")
     public ResponseEntity<List<Ticket>> allTickets() {
-        List tickeList = service.getAllTickets();
+        List<Ticket> tickeList = service.getAllTickets();
         if (tickeList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

@@ -1,14 +1,12 @@
 package com.ennov.tickets.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ennov.tickets.exception.ResourceNotFoundException;
 import com.ennov.tickets.model.Ticket;
-import com.ennov.tickets.model.User;
 import com.ennov.tickets.repo.TicketRepository;
 import com.ennov.tickets.repo.UserRepository;
 
