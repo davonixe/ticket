@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Ticket> getTicketsByUser() {
-        // TODO Auto-generated method stub
+    public List<Ticket> getTicketsByUser(Long id) {
+        User user = this.getUserById(id);
         throw new UnsupportedOperationException("Unimplemented method 'getTicketsByUser'");
     }
 

@@ -26,28 +26,33 @@ public class TicketController {
     @Autowired
     TicketService service;
 
-    @GetMapping("/ticket")
+    @GetMapping("/tickets")
     List<Ticket> allTickets() {
         return service.getAllTickets();
     }
 
-    @GetMapping("/ticket/{id}")
+    @GetMapping("/tickets/{id}")
     Ticket getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    @PostMapping("/ticket")
+    @PostMapping("/tickets")
     Ticket newTicket(@RequestBody Ticket ticket) {
         return service.createNewTicket(ticket);
     }
     
-    @PutMapping("/ticket/{id}")
+    @PutMapping("/tickets/{id}")
     Ticket updateTicket(@RequestBody Ticket ticket, @PathVariable Long id) {
         return service.updateOrCreateTicket(ticket, id);
     }
 
-    @DeleteMapping("/ticket/{id}")
+    @DeleteMapping("/tickets/{id}")
     void deleteTicket(@PathVariable Long id) {
         service.deleteTicket(id);
+    }
+
+    @PutMapping("/tickets/{id}/assign/{userId}")
+    Ticket assignTicket(@PathVariable Long id, @PathVariable Long userId) {
+        return service.assignTicket(id, userId);
     }
 }

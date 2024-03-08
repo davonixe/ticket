@@ -66,7 +66,7 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public Ticket assignTicket() {
+    public Ticket assignTicket(Long ticketId, Long userId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'assignTicket'");
     }

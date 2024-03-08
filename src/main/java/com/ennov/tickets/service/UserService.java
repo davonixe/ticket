@@ -11,5 +11,5 @@ public interface UserService {
     public User createNewUser(User user);
     public User updateOrCreateUser(User user, Long id);
     public void deleteUser(Long id);
-    public List<Ticket> getTicketsByUser();
+    public List<Ticket> getTicketsByUser(Long id);
 }

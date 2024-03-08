@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ennov.tickets.model.Ticket;
 import com.ennov.tickets.model.User;
 import com.ennov.tickets.service.UserService;
 
@@ -23,29 +24,34 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     List<User> allUsers() {
         return service.getAllUsers();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     User getById(@PathVariable Long id) {
         return service.getUserById(id);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     User newUser(@RequestBody User user) {
         return service.createNewUser(user);
     }
 
-    @PutMapping("user/{id}")
+    @PutMapping("users/{id}")
     User updateUser(@RequestBody User user, @PathVariable Long id) {
         return service.updateOrCreateUser(user, id);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable Long id) {
         service.deleteUser(id);
+    }
+
+    @GetMapping("/users/{id}/ticket")
+    List<Ticket> getTicketsByUser(@PathVariable Long id) {
+        return service.getTicketsByUser(id);
     }
 
 }

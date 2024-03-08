@@ -10,5 +10,5 @@ public interface TicketService {
     public Ticket createNewTicket(Ticket ticket);
     public Ticket updateOrCreateTicket(Ticket ticket, Long id);
     public void deleteTicket(Long id);
-    public Ticket assignTicket();
+    public Ticket assignTicket(Long ticketId, Long userId);
 }
