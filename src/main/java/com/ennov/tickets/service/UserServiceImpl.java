@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ennov.tickets.exception.ResourceNotFoundException;
 import com.ennov.tickets.model.Ticket;
 import com.ennov.tickets.model.User;
+import com.ennov.tickets.repo.TicketRepository;
 import com.ennov.tickets.repo.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -22,28 +24,32 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository repository;
 
+    @Autowired
+    TicketRepository ticketRepository;
+
     @Override
     public List<User> getAllUsers() {
-        log.info("Fetching all users");
+        log.info("Afficher tous les utilisateurs");
         return repository.findAll();
     }
 
     @SuppressWarnings("null")
     @Override
     public User getUserById(Long id) {
-        log.info("Fetching a user by id");
-        return repository.findById(id).get();
+        log.info("Afficher l'utilisateur avec id");
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pas d'utilisateur avec id = " + id));
     }
 
     @SuppressWarnings("null")
     @Override
     public User createNewUser(User user) {
-        log.info("Create new user");
-        return repository.save(user);
+        log.info("Ajouter un nouveau utilisateur");
+        return repository.save(new User(user.getId(), user.getUsername(), user.getEmail(), user.getRole(), user.getTickets()));
     }
 
+    @SuppressWarnings("null")
     @Override
-    public User updateOrCreateUser(User user, Long id) {
+    public User updateUser(User user, Long id) {
         log.info("Mise a jour utilisateur");
         return repository.findById(id)
             .map(updateUser -> {
@@ -51,10 +57,11 @@ public class UserServiceImpl implements UserService{
                     updateUser.setEmail(user.getEmail());
                     return repository.save(updateUser);
             })
-            .orElseGet(() -> {
+            .orElseThrow(() -> new ResourceNotFoundException("Pas d'utilisateur avec id = " + id));
+            /*.orElseGet(() -> {
                 user.setId(id);
                 return repository.save(user);
-            });
+            });*/
     }
 
     @SuppressWarnings("null")
@@ -64,10 +71,11 @@ public class UserServiceImpl implements UserService{
         repository.deleteById(id);
     }
 
+    @SuppressWarnings("null")
     @Override
     public List<Ticket> getTicketsByUser(Long id) {
-        User user = this.getUserById(id);
-        throw new UnsupportedOperationException("Unimplemented method 'getTicketsByUser'");
+        User user = repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Pas d'utilisateur avec id = " + id));
+        return ticketRepository.findByUserId(user.getId());
     }
 
 }

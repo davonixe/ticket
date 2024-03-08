@@ -8,7 +8,7 @@ public interface TicketService {
     public List<Ticket> getAllTickets();
     public Ticket getById(Long id);
     public Ticket createNewTicket(Ticket ticket);
-    public Ticket updateOrCreateTicket(Ticket ticket, Long id);
+    public Ticket updateTicket(Ticket ticket, Long id);
     public void deleteTicket(Long id);
-    public Ticket assignTicket(Long ticketId, Long userId);
+    public Ticket assignTicket(Long id, Long userId);
 }

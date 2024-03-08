@@ -9,7 +9,7 @@ public interface UserService {
     public List<User> getAllUsers();
     public User getUserById(Long id);
     public User createNewUser(User user);
-    public User updateOrCreateUser(User user, Long id);
+    public User updateUser(User user, Long id);
     public void deleteUser(Long id);
     public List<Ticket> getTicketsByUser(Long id);
 }

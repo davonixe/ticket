@@ -1,12 +1,16 @@
 package com.ennov.tickets.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ennov.tickets.exception.ResourceNotFoundException;
 import com.ennov.tickets.model.Ticket;
+import com.ennov.tickets.model.User;
 import com.ennov.tickets.repo.TicketRepository;
+import com.ennov.tickets.repo.UserRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -21,27 +25,32 @@ public class TicketServiceImpl implements TicketService{
     @Autowired
     TicketRepository repository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public List<Ticket> getAllTickets() {
-        log.info("Fetching all tickets");
+        log.info("Afficher tous les tickers");
         return repository.findAll();
     }
 
     @SuppressWarnings("null")
     @Override
     public Ticket getById(Long id) {
-        log.info("Fetching a ticket by id");
-        return repository.findById(id).get();
+        log.info("Afficher le ticket avec id ");
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pas de ticket avec id = " + id));
     }
 
+    @SuppressWarnings("null")
     @Override
     public Ticket createNewTicket(Ticket ticket) {
-        log.info("Create new ticket");
-        return repository.save(ticket);
+        log.info("Ajouter un nouveau ticket");
+        return repository.save(new Ticket(ticket.getId(), ticket.getTitle(), ticket.getDescription(), ticket.getStatus(), ticket.getUser()));
     }
 
+    @SuppressWarnings("null")
     @Override
-    public Ticket updateOrCreateTicket(Ticket ticket, Long id) {
+    public Ticket updateTicket(Ticket ticket, Long id) {
         log.info("Mise a jour d'un ticket");
         return repository.findById(id)
             .map(updateTicket -> {
@@ -49,13 +58,14 @@ public class TicketServiceImpl implements TicketService{
                     updateTicket.setDescription(ticket.getDescription());
                     updateTicket.setStatus(ticket.getStatus());
                     updateTicket.setUser(ticket.getUser());
-                    updateTicket.setAssignUser(ticket.getAssignUser());
                     return repository.save(updateTicket);
-            })
-            .orElseGet(() -> {
+            }).orElseThrow(() -> new ResourceNotFoundException("Pas de ticket avec id = " + id));
+
+            // Si besoin etendre la methode pour la mise a jour et CREATION
+            /**.orElseGet(() -> {
                 ticket.setId(id);
                 return repository.save(ticket);
-            });
+            });*/
     }
 
     @SuppressWarnings("null")
@@ -65,9 +75,14 @@ public class TicketServiceImpl implements TicketService{
         repository.deleteById(id);
     }
 
+    @SuppressWarnings("null")
     @Override
-    public Ticket assignTicket(Long ticketId, Long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'assignTicket'");
+    public Ticket assignTicket(Long id, Long userId) {
+        log.info("Assigner un ticket");
+        return userRepository.findById(userId).map(user -> {
+            Ticket ticket = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pas de ticket avec id = " + id));
+            ticket.setUser(user);
+            return repository.save(ticket);
+        }).orElseThrow(() ->new ResourceNotFoundException("User " + userId + " not found"));
     }
 }

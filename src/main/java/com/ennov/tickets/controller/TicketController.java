@@ -3,6 +3,9 @@ package com.ennov.tickets.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 
+@CrossOrigin(origins = "http://localhost:8090")
 @RestController
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,33 +30,43 @@ public class TicketController {
     @Autowired
     TicketService service;
 
+    @SuppressWarnings("unchecked")
     @GetMapping("/tickets")
-    List<Ticket> allTickets() {
-        return service.getAllTickets();
+    public ResponseEntity<List<Ticket>> allTickets() {
+        List tickeList = service.getAllTickets();
+        if (tickeList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tickeList, HttpStatus.OK);
     }
 
     @GetMapping("/tickets/{id}")
-    Ticket getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<Ticket> getById(@PathVariable Long id) {
+        Ticket ticket = service.getById(id);
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
 
     @PostMapping("/tickets")
-    Ticket newTicket(@RequestBody Ticket ticket) {
-        return service.createNewTicket(ticket);
+    public ResponseEntity<Ticket> newTicket(@RequestBody Ticket ticket) {
+        Ticket _ticket = service.createNewTicket(ticket);
+        return new ResponseEntity<>(_ticket, HttpStatus.CREATED);
     }
     
     @PutMapping("/tickets/{id}")
-    Ticket updateTicket(@RequestBody Ticket ticket, @PathVariable Long id) {
-        return service.updateOrCreateTicket(ticket, id);
+    public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket, @PathVariable Long id) {
+        Ticket _ticket = service.updateTicket(ticket, id);
+        return new ResponseEntity<>(_ticket, HttpStatus.OK);
     }
 
     @DeleteMapping("/tickets/{id}")
-    void deleteTicket(@PathVariable Long id) {
+    public ResponseEntity<?> deleteTicket(@PathVariable Long id) {
         service.deleteTicket(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/tickets/{id}/assign/{userId}")
-    Ticket assignTicket(@PathVariable Long id, @PathVariable Long userId) {
-        return service.assignTicket(id, userId);
+    public ResponseEntity<Ticket> assignTicket(@PathVariable Long id, @PathVariable Long userId) {
+        Ticket ticket = service.assignTicket(id, userId);
+        return new ResponseEntity<>(ticket, HttpStatus.CREATED);
     }
 }
