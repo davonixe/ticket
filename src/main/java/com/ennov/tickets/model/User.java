@@ -3,6 +3,8 @@ package com.ennov.tickets.model;
 
 import java.util.List;
 
+import com.ennov.tickets.model.audit.Auditable;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -20,7 +23,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@EqualsAndHashCode(callSuper=false)
+public class User extends Auditable<String> {
 
     @Id
     @GeneratedValue
