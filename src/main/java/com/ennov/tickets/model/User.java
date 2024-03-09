@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 //import lombok.EqualsAndHashCode;
@@ -29,12 +31,20 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
+
+    @NotBlank
     @Column(name = "username")
     private String username;
+
+    @Email
+    @NotBlank
     @Column(name = "email")
     private String email;
+
+    @NotBlank
     @Column(name = "role")
     private UserRole role;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Ticket> tickets; 
     

@@ -18,6 +18,7 @@ import com.ennov.tickets.model.Ticket;
 import com.ennov.tickets.model.User;
 import com.ennov.tickets.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @CrossOrigin(origins = "http://localhost:8090")
@@ -48,13 +49,13 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> newUser(@RequestBody User user) {
+    public ResponseEntity<User> newUser(@Valid @RequestBody User user) {
         User _user = service.createNewUser(user);
         return new ResponseEntity<>(_user, HttpStatus.CREATED);
     }
 
     @PutMapping("users/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable Long id) {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable Long id) {
         User _user = service.updateUser(user, id);
         return new ResponseEntity<>(_user, HttpStatus.OK);
     }

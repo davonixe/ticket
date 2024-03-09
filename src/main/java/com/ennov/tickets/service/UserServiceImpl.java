@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService{
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pas d'utilisateur avec id = " + id));
     }
 
-    @SuppressWarnings("null")
     @Override
     public User createNewUser(User user) {
         log.info("Ajouter un nouveau utilisateur");

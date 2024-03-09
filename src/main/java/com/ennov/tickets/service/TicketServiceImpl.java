@@ -39,7 +39,6 @@ public class TicketServiceImpl implements TicketService{
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pas de ticket avec id = " + id));
     }
 
-    @SuppressWarnings("null")
     @Override
     public Ticket createNewTicket(Ticket ticket) {
         log.info("Ajouter un nouveau ticket");
