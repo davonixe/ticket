@@ -5,7 +5,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,10 +19,10 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.ennov.tickets.model.Role;
 import com.ennov.tickets.model.Ticket;
 import com.ennov.tickets.model.TicketStatus;
 import com.ennov.tickets.model.User;
-import com.ennov.tickets.model.UserRole;
 import com.ennov.tickets.repo.TicketRepository;
 import com.ennov.tickets.repo.UserRepository;
 import com.ennov.tickets.service.TicketServiceImpl;
@@ -55,26 +57,27 @@ class TicketsApplicationTests {
 	public void testFindAllUsers() {
 		List<User> uList = new ArrayList<User>();
 		List<Ticket> tickets = new ArrayList<Ticket>();
+		Set<Role> roles = new HashSet<>();
 
 		User user1 = new User();
 		user1.setId((long) 1);
 		user1.setUsername("David");
 		user1.setEmail("david@duck.com");
-		user1.setRole(UserRole.MANAGER);
+		user1.setRoles(roles);
 		user1.setTickets(tickets);
 
 		User user2 = new User();
 		user2.setId((long) 2);
 		user2.setUsername("Anne");
 		user2.setEmail("anne@duck.com");
-		user2.setRole(UserRole.USER);
+		user2.setRoles(roles);
 		user2.setTickets(tickets);
 
 		User user3 = new User();
 		user3.setId((long) 3);
 		user3.setUsername("Carole");
 		user3.setEmail("carole@duck.com");
-		user3.setRole(UserRole.MANAGER);
+		user3.setRoles(roles);
 		user3.setTickets(tickets);
 
 		uList.add(user1);
@@ -92,12 +95,13 @@ class TicketsApplicationTests {
 		@Test
 		public void testSaveTicket() {
 			Ticket ticket = new Ticket();
+			Set<Role> roles = new HashSet<>();
 
 			User user1 = new User();
 			user1.setId((long) 1);
 			user1.setUsername("David");
 			user1.setEmail("david@duck.com");
-			user1.setRole(UserRole.MANAGER);
+			user1.setRoles(roles);
 			user1.setTickets(new ArrayList<Ticket>());
 
 			ticket.setId((long) 1);

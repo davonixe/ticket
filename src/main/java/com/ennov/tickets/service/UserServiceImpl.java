@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User createNewUser(User user) {
         log.info("Ajouter un nouveau utilisateur");
-        return repository.save(new User(user.getId(), user.getUsername(), user.getEmail(), user.getRole(), user.getTickets()));
+        return repository.save(new User(user.getId(), user.getUsername(), user.getEmail(),user.getPassword(), user.getRoles(), user.getTickets()));
     }
 
     @SuppressWarnings("null")

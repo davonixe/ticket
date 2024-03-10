@@ -21,7 +21,7 @@ import com.ennov.tickets.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:8090")
+@CrossOrigin(origins = "http://localhost:8090", maxAge = 3600)
 @RestController
 @RequiredArgsConstructor
 public class UserController {
