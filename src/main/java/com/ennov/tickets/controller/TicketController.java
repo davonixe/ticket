@@ -27,13 +27,13 @@ import lombok.NoArgsConstructor;
 @RestController
 @NoArgsConstructor
 @AllArgsConstructor
-@PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
 public class TicketController {
     
     @Autowired
     TicketService service;
 
     @GetMapping("/tickets")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<List<Ticket>> allTickets() {
         List<Ticket> tickeList = service.getAllTickets();
         if (tickeList.isEmpty()) {
@@ -67,6 +67,7 @@ public class TicketController {
     }
 
     @PutMapping("/tickets/{id}/assign/{userId}")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<Ticket> assignTicket(@PathVariable Long id, @PathVariable Long userId) {
         Ticket ticket = service.assignTicket(id, userId);
         return new ResponseEntity<>(ticket, HttpStatus.CREATED);
