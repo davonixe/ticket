@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ennov.tickets.model.Ticket;
 import com.ennov.tickets.model.User;
+import com.ennov.tickets.payload.SignupRequest;
 import com.ennov.tickets.service.UserService;
+import com.ennov.tickets.service.factory.UserFactory;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,9 +51,10 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> newUser(@Valid @RequestBody User user) {
-        User _user = service.createNewUser(user);
-        return new ResponseEntity<>(_user, HttpStatus.CREATED);
+    public ResponseEntity<?> newUser(@Valid @RequestBody SignupRequest user) {
+        //ResponseEntity<?> _user= new UserFactory().createUserFactory(user);
+        //User _user = service.createNewUser(user);
+        return new UserFactory().createUserFactory(user);
     }
 
     @PutMapping("users/{id}")
